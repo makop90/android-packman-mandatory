@@ -16,14 +16,38 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		Button button = (Button) findViewById(R.id.moveButton);
+		Button right = (Button) findViewById(R.id.right);
+		Button left = (Button) findViewById(R.id.left);
+		Button top = (Button) findViewById(R.id.top);
+		Button bottom = (Button) findViewById(R.id.bottom);
 		myView = (MyView) findViewById(R.id.gameView);
 		//listener of our pacman
-		button.setOnClickListener(new OnClickListener() {
+		right.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				myView.moveRight(10);
+			}
+		});
+		left.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				myView.moveLeft(10);
+			}
+		});
+		top.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				myView.moveTop(10);
+			}
+		});
+		bottom.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				myView.moveBottom(10);
 			}
 		});
 		
