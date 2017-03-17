@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
-	MyView myView;
+	GameView gameView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +22,9 @@ public class MainActivity extends Activity {
 		Button left = (Button) findViewById(R.id.left);
 		Button top = (Button) findViewById(R.id.top);
 		Button bottom = (Button) findViewById(R.id.bottom);
-		myView = (MyView) findViewById(R.id.gameView);
+		gameView = (GameView) findViewById(R.id.gameView);
         final TextView txtValue = (TextView) findViewById(R.id.score_num);
-        txtValue.setText(Integer.toString(myView.score));
+        txtValue.setText(Integer.toString(gameView.score));
 
         right.setOnTouchListener(new OnTouchListener() {
 
@@ -32,8 +32,8 @@ public class MainActivity extends Activity {
             public boolean onTouch(View view, MotionEvent motionevent) {
                 int action = motionevent.getAction();
                 if (action == MotionEvent.ACTION_DOWN) {
-                    myView.moveRight(80);
-                    txtValue.setText(Integer.toString(myView.score));
+                    gameView.moveRight(80);
+                    txtValue.setText(Integer.toString(gameView.score));
                 }
                 return false;
             }
@@ -45,8 +45,8 @@ public class MainActivity extends Activity {
             public boolean onTouch(View view, MotionEvent motionevent) {
                 int action = motionevent.getAction();
                 if (action == MotionEvent.ACTION_DOWN) {
-                    myView.moveLeft(80);
-                    txtValue.setText(Integer.toString(myView.score));
+                    gameView.moveLeft(80);
+                    txtValue.setText(Integer.toString(gameView.score));
                 }
                 return false;
             }
@@ -58,8 +58,8 @@ public class MainActivity extends Activity {
             public boolean onTouch(View view, MotionEvent motionevent) {
                 int action = motionevent.getAction();
                 if (action == MotionEvent.ACTION_DOWN) {
-                    myView.moveTop(80);
-                    txtValue.setText(Integer.toString(myView.score));
+                    gameView.moveTop(80);
+                    txtValue.setText(Integer.toString(gameView.score));
                 }
                 return false;
             }
@@ -71,8 +71,8 @@ public class MainActivity extends Activity {
             public boolean onTouch(View view, MotionEvent motionevent) {
                 int action = motionevent.getAction();
                 if (action == MotionEvent.ACTION_DOWN) {
-                    myView.moveBottom(80);
-                    txtValue.setText(Integer.toString(myView.score));
+                    gameView.moveBottom(80);
+                    txtValue.setText(Integer.toString(gameView.score));
                 }
                 return false;
             }

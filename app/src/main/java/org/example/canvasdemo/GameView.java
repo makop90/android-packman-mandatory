@@ -9,7 +9,7 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class MyView extends View {
+public class GameView extends View {
 
     Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pacman);
     //The coordinates for our dear pacman: (0,0) is the top-left corner
@@ -51,17 +51,17 @@ public class MyView extends View {
     /* The next 3 constructors are needed for the Android view system,
     when we have a custom view.
      */
-    public MyView(Context context) {
+    public GameView(Context context) {
         super(context);
 
     }
 
-    public MyView(Context context, AttributeSet attrs) {
+    public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
 
-    public MyView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public GameView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
