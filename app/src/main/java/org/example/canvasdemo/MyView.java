@@ -4,8 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -13,37 +13,41 @@ public class MyView extends View {
 
     Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pacman);
     //The coordinates for our dear pacman: (0,0) is the top-left corner
-    int pacx = 0;
-    int pacy = 0;
+    Pacman pacman = new Pacman(0,0);
+    Paint paint = new Paint();
     int h, w; //used for storing our height and width
+    int score = 0;
+    //generate first coin
+    Coin coin = new Coin(500, 500);
 
     public void moveRight(int x) {
         //still within our boundaries?
-        if (pacx + x + bitmap.getWidth() <= w)
-            pacx = pacx + x;
+        if (pacman.pacx + x + bitmap.getWidth() <= w)
+            pacman.moveRight(x);
         invalidate(); //redraw everything - this ensures onDraw() is called.
     }
 
     public void moveLeft(int x) {
         //still within our boundaries?
-        if (pacx - x  >= 0)
-            pacx = pacx - x;
+        if (pacman.pacx - x  >= 0)
+            pacman.moveLeft(x);
         invalidate(); //redraw everything - this ensures onDraw() is called.
     }
 
     public void moveTop(int y) {
         //still within our boundaries?
-        if (pacy - y  >= 0)
-            pacy = pacy - y;
+        if (pacman.pacy - y  >= 0)
+            pacman.moveTop(y);
         invalidate(); //redraw everything - this ensures onDraw() is called.
     }
 
     public void moveBottom(int y) {
         //still within our boundaries?
-        if (pacy + y + bitmap.getHeight() <= h)
-            pacy = pacy + y;
+        if (pacman.pacy + y + bitmap.getHeight() <= h)
+            pacman.moveBottom(y);
         invalidate(); //redraw everything - this ensures onDraw() is called.
     }
+
     /* The next 3 constructors are needed for the Android view system,
     when we have a custom view.
      */
@@ -68,25 +72,21 @@ public class MyView extends View {
         //Here we get the height and weight
         h = canvas.getHeight();
         w = canvas.getWidth();
-        System.out.println("h = " + h + ", w = " + w);
-        //Making a new paint object
-        Paint paint = new Paint();
-        //setting the color
-        paint.setColor(Color.RED);
-        canvas.drawColor(Color.WHITE); //clear entire canvas to white color
-        //drawing a line from (0,0) -> (300,200)
-        canvas.drawLine(0, 0, 300, 200, paint);
-        paint.setColor(Color.GREEN);
-        canvas.drawLine(0, 200, 300, 0, paint);
 
-        //setting the color using the format: Transparency, Red, Green, Blue
-        paint.setColor(0xff000099);
+        if(Math.sqrt(((pacman.pacx + 80 - coin.x) * (pacman.pacx + 80 - coin.x)) + ((pacman.pacy + 80 - coin.y) + (pacman.pacy + 80 - coin.y))) < 80)
+        {
+            score += 10;
+            coin = new Coin(w, h);
+        }
 
-        //drawing a circle with radius 20, and center in (100,100)
-        canvas.drawCircle(100, 100, 20, paint);
+        canvas.drawColor(Color.WHITE);
 
+        paint.setColor(Color.CYAN);
 
-        canvas.drawBitmap(bitmap, pacx, pacy, paint);
+        //drawing a circle based on the coin instance
+        canvas.drawCircle(coin.x, coin.y, Coin.radius, paint);
+
+        canvas.drawBitmap(bitmap, pacman.pacx, pacman.pacy, paint);
         super.onDraw(canvas);
     }
 

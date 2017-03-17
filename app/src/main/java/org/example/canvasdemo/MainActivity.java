@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.view.MotionEvent;
+import android.view.View.OnTouchListener;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
@@ -21,37 +23,60 @@ public class MainActivity extends Activity {
 		Button top = (Button) findViewById(R.id.top);
 		Button bottom = (Button) findViewById(R.id.bottom);
 		myView = (MyView) findViewById(R.id.gameView);
-		//listener of our pacman
-		right.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				myView.moveRight(10);
-			}
-		});
-		left.setOnClickListener(new OnClickListener() {
+        final TextView txtValue = (TextView) findViewById(R.id.score_num);
+        txtValue.setText(Integer.toString(myView.score));
 
-			@Override
-			public void onClick(View v) {
-				myView.moveLeft(10);
-			}
-		});
-		top.setOnClickListener(new OnClickListener() {
+        right.setOnTouchListener(new OnTouchListener() {
 
-			@Override
-			public void onClick(View v) {
-				myView.moveTop(10);
-			}
-		});
-		bottom.setOnClickListener(new OnClickListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionevent) {
+                int action = motionevent.getAction();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    myView.moveRight(80);
+                    txtValue.setText(Integer.toString(myView.score));
+                }
+                return false;
+            }
+        });
 
-			@Override
-			public void onClick(View v) {
-				myView.moveBottom(10);
-			}
+		left.setOnTouchListener(new OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionevent) {
+                int action = motionevent.getAction();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    myView.moveLeft(80);
+                    txtValue.setText(Integer.toString(myView.score));
+                }
+                return false;
+            }
 		});
-		
-		
+
+		top.setOnTouchListener(new OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionevent) {
+                int action = motionevent.getAction();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    myView.moveTop(80);
+                    txtValue.setText(Integer.toString(myView.score));
+                }
+                return false;
+            }
+		});
+
+		bottom.setOnTouchListener(new OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionevent) {
+                int action = motionevent.getAction();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    myView.moveBottom(80);
+                    txtValue.setText(Integer.toString(myView.score));
+                }
+                return false;
+            }
+		});
 	}
 
 	@Override
