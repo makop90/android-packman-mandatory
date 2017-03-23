@@ -9,41 +9,104 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class GameView extends View {
 
-    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pacman);
+    Bitmap tempPackman = BitmapFactory.decodeResource(getResources(), R.drawable.pacman);
+    Bitmap bitmapPackman = Bitmap.createScaledBitmap(tempPackman, 80, 80, false);
     //The coordinates for our dear pacman: (0,0) is the top-left corner
-    Pacman pacman = new Pacman(0,0);
+    Pacman pacman = new Pacman(0, 0);
+
+    Bitmap tempEnemy = BitmapFactory.decodeResource(getResources(), R.drawable.enemy);
+    Bitmap bitmapEnemy = Bitmap.createScaledBitmap(tempEnemy, 80, 80, false);
+    List<Enemy> enemies = new ArrayList<Enemy>();
     Paint paint = new Paint();
     int h, w; //used for storing our height and width
     int score = 0;
     //generate first coin
     Coin coin = new Coin(500, 500);
 
+
+
+    public void moveEnemies(int x, int y) {
+        Random rand = new Random();
+        for (Enemy enemy : enemies) {
+            if (enemy.move_duration == 0){
+                enemy.move_direction = rand.nextInt(4);
+                enemy.move_duration = rand.nextInt(15) + 1;
+            }
+            switch (enemy.move_direction) {
+                case 0:
+                    if (enemy.enemyX + x + bitmapEnemy.getWidth() <= w)
+                        enemy.moveRight(x);
+                    else{
+                        enemy.move_duration = 1;
+                        enemy.moveLeft(x);
+                    }
+                    invalidate(); //redraw everything - this ensures onDraw() is called.
+                    break;
+                case 1:
+                    if (enemy.enemyX - x >= 0)
+                        enemy.moveLeft(x);
+                    else{
+                        enemy.move_duration = 1;
+                        enemy.moveRight(x);
+                    }
+                    invalidate(); //redraw everything - this ensures onDraw() is called.
+                    break;
+                case 2:
+                    if (enemy.enemyY - y >= 0)
+                        enemy.moveTop(y);
+                    else{
+                        enemy.move_duration = 1;
+                        enemy.moveBottom(x);
+                    }
+                    invalidate(); //redraw everything - this ensures onDraw() is called.
+                    break;
+                case 3:
+                    if (enemy.enemyY + y + bitmapEnemy.getHeight() <= h)
+                        enemy.moveBottom(y);
+                    else{
+                        enemy.move_duration = 1;
+                        enemy.moveTop(x);
+                    }
+                    invalidate(); //redraw everything - this ensures onDraw() is called.
+                    break;
+                default:
+                    break;
+            }
+            enemy.move_duration--;
+        }
+    }
+
+
     public void moveRight(int x) {
         //still within our boundaries?
-        if (pacman.pacx + x + bitmap.getWidth() <= w)
+        if (pacman.pacx + x + bitmapPackman.getWidth() <= w)
             pacman.moveRight(x);
         invalidate(); //redraw everything - this ensures onDraw() is called.
     }
 
     public void moveLeft(int x) {
         //still within our boundaries?
-        if (pacman.pacx - x  >= 0)
+        if (pacman.pacx - x >= 0)
             pacman.moveLeft(x);
         invalidate(); //redraw everything - this ensures onDraw() is called.
     }
 
     public void moveTop(int y) {
         //still within our boundaries?
-        if (pacman.pacy - y  >= 0)
+        if (pacman.pacy - y >= 0)
             pacman.moveTop(y);
         invalidate(); //redraw everything - this ensures onDraw() is called.
     }
 
     public void moveBottom(int y) {
         //still within our boundaries?
-        if (pacman.pacy + y + bitmap.getHeight() <= h)
+        if (pacman.pacy + y + bitmapPackman.getHeight() <= h)
             pacman.moveBottom(y);
         invalidate(); //redraw everything - this ensures onDraw() is called.
     }
@@ -73,8 +136,7 @@ public class GameView extends View {
         h = canvas.getHeight();
         w = canvas.getWidth();
 
-        if(Math.sqrt(((pacman.pacx + 80 - coin.x) * (pacman.pacx + 80 - coin.x)) + ((pacman.pacy + 80 - coin.y) + (pacman.pacy + 80 - coin.y))) < 80)
-        {
+        if (Math.sqrt(((pacman.pacx + 40 - coin.x) * (pacman.pacx + 40 - coin.x)) + ((pacman.pacy + 40 - coin.y) * (pacman.pacy + 40 - coin.y))) < 40) {
             score += 10;
             coin = new Coin(w, h);
         }
@@ -86,7 +148,11 @@ public class GameView extends View {
         //drawing a circle based on the coin instance
         canvas.drawCircle(coin.x, coin.y, Coin.radius, paint);
 
-        canvas.drawBitmap(bitmap, pacman.pacx, pacman.pacy, paint);
+        canvas.drawBitmap(bitmapPackman, pacman.pacx, pacman.pacy, paint);
+        for (Enemy enemy : enemies) {
+
+            canvas.drawBitmap(bitmapEnemy, enemy.enemyX, enemy.enemyY, paint);
+        }
         super.onDraw(canvas);
     }
 

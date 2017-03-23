@@ -3,5 +3,6 @@
 
     <string name="app_name">Pacman</string>
     <string name="score">Score: </string>
+    <string name="countdown">Countdown: </string>
     <string name="action_settings">Settings</string>
 </resources>
