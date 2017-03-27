@@ -14,13 +14,14 @@ import android.view.View.OnTouchListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends Activity {
 
     GameView gameView;
-    private final int LEVEL_TIME = 60;
+    private final int LEVEL_TIME = 30;
     private int current_level = 1;
     private Timer movingTimer;
     private Timer enemyMovingTimer;
@@ -30,6 +31,7 @@ public class MainActivity extends Activity {
     private String direction = "Right";
     private TextView scoreView;
     private TextView countdownView;
+    boolean finished = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +135,9 @@ public class MainActivity extends Activity {
                         running = true;
                         pause_start.setText("Pause");
                     }
+                    if(finished){
+                        finished = false;
+                    }
                 }
                 return false;
             }
@@ -142,7 +147,7 @@ public class MainActivity extends Activity {
 
     private Runnable Time_Countdown = new Runnable() {
         public void run() {
-            if (running) {
+            if (running && !finished) {
                 if (timePassed < LEVEL_TIME) {
                     timePassed++;
                     countdownView.setText(Integer.toString(LEVEL_TIME - timePassed) + " sec");
@@ -150,6 +155,8 @@ public class MainActivity extends Activity {
                     timePassed = 0;
                     current_level++;
                     running = false;
+                    Enemy enemy = new Enemy(gameView.w / 2, gameView.h / 2);
+                    gameView.enemies.add(enemy);
                     new CountDownTimer(5000, 1000) {
                         int tick = 4;
                         Toast toast;
@@ -178,7 +185,22 @@ public class MainActivity extends Activity {
 
     private Runnable Packman_Move = new Runnable() {
         public void run() {
-            if (running) {
+            for(Enemy enemy : gameView.enemies){
+//               check if enemy in range of packman
+                boolean expression1 = (  (75 > gameView.pacman.pacx - enemy.enemyX && gameView.pacman.pacx - enemy.enemyX > -75) && (75 > gameView.pacman.pacy - enemy.enemyY && gameView.pacman.pacy - enemy.enemyY > -75));
+                if (expression1) {
+                    finished = true;
+                    running = false;
+                    final Button pause_start = (Button) findViewById(R.id.pause_start);
+                    pause_start.setText("Restart");
+                    Toast toast = Toast.makeText(getApplicationContext(), "Game over", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                    gameView.pacman = new Pacman(0, 0);
+                    gameView.enemies = new ArrayList<>();
+                }
+            }
+            if (running && !finished) {
                 switch (direction) {
                     case "Right":
                         gameView.moveRight(10);
