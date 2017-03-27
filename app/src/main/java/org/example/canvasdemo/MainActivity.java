@@ -22,16 +22,15 @@ public class MainActivity extends Activity {
 
     GameView gameView;
     private final int LEVEL_TIME = 30;
-    private int current_level = 1;
     private Timer movingTimer;
     private Timer enemyMovingTimer;
     private Timer countdownTimer;
+    private int current_level = 1;
     private int timePassed = 0;
     private boolean running = false;
     private String direction = "Right";
     private TextView scoreView;
     private TextView countdownView;
-    boolean finished = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,8 +134,8 @@ public class MainActivity extends Activity {
                         running = true;
                         pause_start.setText("Pause");
                     }
-                    if(finished){
-                        finished = false;
+                    if (gameView.finished) {
+                        gameView.finished = false;
                     }
                 }
                 return false;
@@ -147,7 +146,7 @@ public class MainActivity extends Activity {
 
     private Runnable Time_Countdown = new Runnable() {
         public void run() {
-            if (running && !finished) {
+            if (running && !gameView.finished) {
                 if (timePassed < LEVEL_TIME) {
                     timePassed++;
                     countdownView.setText(Integer.toString(LEVEL_TIME - timePassed) + " sec");
@@ -185,11 +184,7 @@ public class MainActivity extends Activity {
 
     private Runnable Packman_Move = new Runnable() {
         public void run() {
-            for(Enemy enemy : gameView.enemies){
-//               check if enemy in range of packman
-                boolean expression1 = (  (75 > gameView.pacman.pacx - enemy.enemyX && gameView.pacman.pacx - enemy.enemyX > -75) && (75 > gameView.pacman.pacy - enemy.enemyY && gameView.pacman.pacy - enemy.enemyY > -75));
-                if (expression1) {
-                    finished = true;
+                if (running && gameView.finished ) {
                     running = false;
                     final Button pause_start = (Button) findViewById(R.id.pause_start);
                     pause_start.setText("Restart");
@@ -198,9 +193,11 @@ public class MainActivity extends Activity {
                     toast.show();
                     gameView.pacman = new Pacman(0, 0);
                     gameView.enemies = new ArrayList<>();
+                    current_level = 1;
+                    timePassed = 0;
+                    direction = "Right";
                 }
-            }
-            if (running && !finished) {
+            if (running && !gameView.finished) {
                 switch (direction) {
                     case "Right":
                         gameView.moveRight(10);
@@ -231,7 +228,7 @@ public class MainActivity extends Activity {
                         gameView.enemies.add(enemy);
                     }
                 }
-                gameView.moveEnemies(10,10);
+                gameView.moveEnemies(10, 10);
 
             }
 

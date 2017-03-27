@@ -26,15 +26,15 @@ public class GameView extends View {
     Paint paint = new Paint();
     int h, w; //used for storing our height and width
     int score = 0;
+    boolean finished = false;
     //generate first coin
     Coin coin = new Coin(500, 500);
-
 
 
     public void moveEnemies(int x, int y) {
         Random rand = new Random();
         for (Enemy enemy : enemies) {
-            if (enemy.move_duration == 0){
+            if (enemy.move_duration == 0) {
                 enemy.move_direction = rand.nextInt(4);
                 enemy.move_duration = rand.nextInt(15) + 1;
             }
@@ -42,7 +42,7 @@ public class GameView extends View {
                 case 0:
                     if (enemy.enemyX + x + bitmapEnemy.getWidth() <= w)
                         enemy.moveRight(x);
-                    else{
+                    else {
                         enemy.move_duration = 1;
                         enemy.moveLeft(x);
                     }
@@ -51,7 +51,7 @@ public class GameView extends View {
                 case 1:
                     if (enemy.enemyX - x >= 0)
                         enemy.moveLeft(x);
-                    else{
+                    else {
                         enemy.move_duration = 1;
                         enemy.moveRight(x);
                     }
@@ -60,7 +60,7 @@ public class GameView extends View {
                 case 2:
                     if (enemy.enemyY - y >= 0)
                         enemy.moveTop(y);
-                    else{
+                    else {
                         enemy.move_duration = 1;
                         enemy.moveBottom(x);
                     }
@@ -69,7 +69,7 @@ public class GameView extends View {
                 case 3:
                     if (enemy.enemyY + y + bitmapEnemy.getHeight() <= h)
                         enemy.moveBottom(y);
-                    else{
+                    else {
                         enemy.move_duration = 1;
                         enemy.moveTop(x);
                     }
@@ -135,6 +135,15 @@ public class GameView extends View {
         //Here we get the height and weight
         h = canvas.getHeight();
         w = canvas.getWidth();
+
+        for (Enemy enemy : enemies) {
+//               check if enemy in range of packman
+            boolean expression1 = ((75 > pacman.pacx - enemy.enemyX && pacman.pacx - enemy.enemyX > -75) && (75 > pacman.pacy - enemy.enemyY && pacman.pacy - enemy.enemyY > -75));
+            if (expression1) {
+                finished = true;
+                score = 0;
+            }
+        }
 
         if (Math.sqrt(((pacman.pacx + 40 - coin.x) * (pacman.pacx + 40 - coin.x)) + ((pacman.pacy + 40 - coin.y) * (pacman.pacy + 40 - coin.y))) < 40) {
             score += 10;
