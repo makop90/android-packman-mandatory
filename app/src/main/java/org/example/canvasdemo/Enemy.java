@@ -3,6 +3,7 @@ package org.example.canvasdemo;
 public class Enemy {
     public int enemyX;
     public int enemyY;
+    public String orientation;
     int move_duration = 0;
     int move_direction = 0;
 
@@ -10,6 +11,7 @@ public class Enemy {
     }
 
     public Enemy(int x, int y) {
+        this.orientation = "right";
         this.enemyX = x;
         this.enemyY = y;
     }

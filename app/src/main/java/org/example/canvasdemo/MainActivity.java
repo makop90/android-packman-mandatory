@@ -15,7 +15,6 @@ import android.view.MotionEvent;
 import android.view.View.OnTouchListener;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,7 +25,7 @@ public class MainActivity extends Activity {
     public static final String HIGHSCORE = "highscore" ;
     public static final String USERNAME = "username" ;
     GameView gameView;
-    private final int LEVEL_TIME = 30;
+    private final int LEVEL_TIME = 20;
     private Timer movingTimer;
     private Timer enemyMovingTimer;
     private Timer countdownTimer;
@@ -156,7 +155,7 @@ public class MainActivity extends Activity {
 
         SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         gameView.highScore = sharedpreferences.getInt(HIGHSCORE, 0);
-        gameView.username = sharedpreferences.getString(USERNAME, "notdefined");
+        gameView.username = sharedpreferences.getString(USERNAME, "Unnamed");
         highScoreView.setText(Integer.toString(gameView.highScore));
         usernameView.setText(gameView.username);
 
@@ -215,7 +214,6 @@ public class MainActivity extends Activity {
                     timePassed = 0;
                     direction = "Right";
                     highScoreView.setText(Integer.toString(gameView.highScore));
-                    usernameView.setText(gameView.username);
                 }
             if (running && !gameView.finished) {
                 switch (direction) {
@@ -235,6 +233,7 @@ public class MainActivity extends Activity {
                         break;
                 }
                 scoreView.setText(Integer.toString(gameView.score));
+                usernameView.setText(gameView.username);
             }
 
         }
