@@ -1,6 +1,8 @@
 package org.example.canvasdemo;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -20,6 +22,9 @@ import java.util.TimerTask;
 
 public class MainActivity extends Activity {
 
+    public static final String MyPREFERENCES = "PacMan" ;
+    public static final String HIGHSCORE = "highscore" ;
+    public static final String USERNAME = "username" ;
     GameView gameView;
     private final int LEVEL_TIME = 30;
     private Timer movingTimer;
@@ -30,6 +35,8 @@ public class MainActivity extends Activity {
     private boolean running = false;
     private String direction = "Right";
     private TextView scoreView;
+    private TextView highScoreView;
+    private TextView usernameView;
     private TextView countdownView;
 
     @Override
@@ -42,6 +49,8 @@ public class MainActivity extends Activity {
         Button bottom = (Button) findViewById(R.id.bottom);
         gameView = (GameView) findViewById(R.id.gameView);
         scoreView = (TextView) findViewById(R.id.score_num);
+        highScoreView = (TextView) findViewById(R.id.highscore);
+        usernameView = (TextView) findViewById(R.id.username);
         countdownView = (TextView) findViewById(R.id.countdown_num);
         scoreView.setText(Integer.toString(gameView.score));
         countdownView.setText(Integer.toString(LEVEL_TIME) + " sec");
@@ -142,6 +151,15 @@ public class MainActivity extends Activity {
             }
         });
 
+
+        //restore preferences and update highscore
+
+        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        gameView.highScore = sharedpreferences.getInt(HIGHSCORE, 0);
+        gameView.username = sharedpreferences.getString(USERNAME, "notdefined");
+        highScoreView.setText(Integer.toString(gameView.highScore));
+        usernameView.setText(gameView.username);
+
     }
 
     private Runnable Time_Countdown = new Runnable() {
@@ -196,6 +214,8 @@ public class MainActivity extends Activity {
                     current_level = 1;
                     timePassed = 0;
                     direction = "Right";
+                    highScoreView.setText(Integer.toString(gameView.highScore));
+                    usernameView.setText(gameView.username);
                 }
             if (running && !gameView.finished) {
                 switch (direction) {
@@ -239,8 +259,14 @@ public class MainActivity extends Activity {
     protected void onStop() {
         super.onStop();
         //just to make sure if the app is killed, that we stop the timer.
+        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt(HIGHSCORE, gameView.highScore);
+        editor.putString(USERNAME, gameView.username);
+        editor.commit();
         movingTimer.cancel();
         countdownTimer.cancel();
+        enemyMovingTimer.cancel();
     }
 
     @Override

@@ -25,6 +25,8 @@ public class GameView extends View {
     List<Enemy> enemies = new ArrayList<Enemy>();
     Paint paint = new Paint();
     int h, w; //used for storing our height and width
+    int highScore = 0;
+    String username = "";
     int score = 0;
     boolean finished = false;
     //generate first coin
@@ -135,13 +137,18 @@ public class GameView extends View {
         //Here we get the height and weight
         h = canvas.getHeight();
         w = canvas.getWidth();
-
         for (Enemy enemy : enemies) {
 //               check if enemy in range of packman
             boolean expression1 = ((75 > pacman.pacx - enemy.enemyX && pacman.pacx - enemy.enemyX > -75) && (75 > pacman.pacy - enemy.enemyY && pacman.pacy - enemy.enemyY > -75));
             if (expression1) {
                 finished = true;
+                if(score > highScore){
+                    highScore = score;
+                    //add popup for username to save him
+                }
+
                 score = 0;
+
             }
         }
 
