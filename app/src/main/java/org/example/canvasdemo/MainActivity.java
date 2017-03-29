@@ -155,7 +155,7 @@ public class MainActivity extends Activity {
 
         SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         gameView.highScore = sharedpreferences.getInt(HIGHSCORE, 0);
-        gameView.username = sharedpreferences.getString(USERNAME, "Unnamed");
+        gameView.username = sharedpreferences.getString(USERNAME, "-");
         highScoreView.setText(Integer.toString(gameView.highScore));
         usernameView.setText(gameView.username);
 
@@ -201,10 +201,14 @@ public class MainActivity extends Activity {
 
     private Runnable Packman_Move = new Runnable() {
         public void run() {
+            if(!gameView.username.equals(highScoreView.getText())){
+                usernameView.setText(gameView.username);
+                highScoreView.setText(Integer.toString(gameView.highScore));
+            }
                 if (running && gameView.finished ) {
                     running = false;
                     final Button pause_start = (Button) findViewById(R.id.pause_start);
-                    pause_start.setText("Restart");
+                    pause_start.setText("Start");
                     Toast toast = Toast.makeText(getApplicationContext(), "Game over", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
@@ -213,7 +217,6 @@ public class MainActivity extends Activity {
                     current_level = 1;
                     timePassed = 0;
                     direction = "Right";
-                    highScoreView.setText(Integer.toString(gameView.highScore));
                 }
             if (running && !gameView.finished) {
                 switch (direction) {

@@ -52,7 +52,7 @@ public class GameView extends View {
     Paint paint = new Paint();
     int h, w; //used for storing our height and width
     int highScore = 0;
-    String username = "";
+    String username = "-";
     int score = 0;
     boolean finished = false;
     String orientation = "right";
