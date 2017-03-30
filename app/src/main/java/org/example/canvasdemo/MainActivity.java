@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +28,7 @@ public class MainActivity extends Activity {
     private Timer movingTimer;
     private Timer enemyMovingTimer;
     private Timer countdownTimer;
-    private int current_level = 1;
+    static int current_level = 1;
     private int timePassed = 0;
     private boolean running = false;
     private String direction = "Right";

@@ -11,7 +11,6 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -216,7 +215,13 @@ when we have a custom view.
         }
 
         if (Math.sqrt(((pacman.pacx + 40 - coin.x) * (pacman.pacx + 40 - coin.x)) + ((pacman.pacy + 40 - coin.y) * (pacman.pacy + 40 - coin.y))) < 40) {
-            score += 10;
+            Integer level = MainActivity.current_level;
+            if (level > 1) {
+                score += 10 + (MainActivity.current_level * 2);
+            } else {
+                score += 10;
+            }
+
             coin = new Coin(w, h);
         }
 
