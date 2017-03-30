@@ -217,7 +217,7 @@ when we have a custom view.
         if (Math.sqrt(((pacman.pacx + 40 - coin.x) * (pacman.pacx + 40 - coin.x)) + ((pacman.pacy + 40 - coin.y) * (pacman.pacy + 40 - coin.y))) < 40) {
             Integer level = MainActivity.current_level;
             if (level > 1) {
-                score += 10 + (MainActivity.current_level * 2);
+                score += 10 + (level * 2);
             } else {
                 score += 10;
             }
