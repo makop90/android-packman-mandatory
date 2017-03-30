@@ -182,11 +182,10 @@ when we have a custom view.
         h = canvas.getHeight();
         w = canvas.getWidth();
         for (Enemy enemy : enemies) {
-//               check if enemy in range of packman
-            boolean touchingEnemy = ((75 > pacman.pacx - enemy.enemyX && pacman.pacx - enemy.enemyX > -75) && (75 > pacman.pacy - enemy.enemyY && pacman.pacy - enemy.enemyY > -75));
-            if (touchingEnemy) {
+            //check if enemy in range of packman
+            if (((75 > pacman.pacx - enemy.enemyX && pacman.pacx - enemy.enemyX > -75) && (75 > pacman.pacy - enemy.enemyY && pacman.pacy - enemy.enemyY > -75))) {
                 finished = true;
-                if(score > highScore){
+                if (score > highScore) {
                     new AlertDialog.Builder(getContext())
                             .setTitle("New high score!")
                             .setMessage("Enter your name")
