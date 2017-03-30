@@ -194,13 +194,19 @@ when we have a custom view.
                             .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     username = username_input.getText().toString();
+                                    if (username.equals("")) {
+                                        username = "Unnamed";
+                                    }
+                                    dialog.dismiss();
                                 }
                             })
                             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     username = "Unnamed";
+                                    dialog.dismiss();
                                 }
                             })
+                            .setCancelable(false)
                             .show();
                     highScore = score;
                 }
