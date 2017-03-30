@@ -60,7 +60,7 @@ public class GameView extends View {
     Coin coin = new Coin(500, 500);
 
     //Username input dialog
-    final EditText username_input = new EditText(getContext());
+    EditText username_input = new EditText(getContext());
 
     /* The next 3 constructors are needed for the Android view system,
 when we have a custom view.
@@ -197,12 +197,14 @@ when we have a custom view.
                                         username = "Unnamed";
                                     }
                                     dialog.dismiss();
+                                    username_input = new EditText(getContext());
                                 }
                             })
                             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     username = "Unnamed";
                                     dialog.dismiss();
+                                    username_input = new EditText(getContext());
                                 }
                             })
                             .setCancelable(false)
